@@ -1,0 +1,33 @@
+﻿@model IEnumerable<string>
+<!--Change the model directive to IEnumerable String-->
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<!--
+    Instead of iterating over a collection of players and displaying the list, iterate over the strings
+    and for every string, display a button that will make an AJAX request to update the ajax-target div
+    with the returned PartialView. This request should go to Players/GetPlayersOnTeam, and the string will be the team routeValue
+-->
+
+    @foreach (var item in Model)
+    {
+        @Ajax.ActionLink(item, "GetPlayersOnTeam", "Players",
+            new { team = item },
+            new AjaxOptions
+            {
+                HttpMethod = "GET",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "ajax-target"
+            },
+             new { @class = "btn btn-default" });
+    }
+
+<div id="ajax-target"></div>
